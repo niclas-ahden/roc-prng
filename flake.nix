@@ -10,7 +10,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     roc-src = {
-      url = "github:roc-lang/roc/0eadb5da411de33c2fce8cb214b15f88bb6f986d";
+      url = "github:roc-lang/roc/f8aa2b12f8a4079a11b3b7926a49d2cb3ecff697";
       flake = false;
     };
   };
