@@ -31,7 +31,7 @@ main! = |_| {
     var seed = Random.seed(Utc.now!().to_u64_wrap())
 
     # Each draw returns the value and the seed for the next draw
-    (die, seed) = seed.int(1, 6)
+    (die, seed) = seed.u8(1, 6)
     (colour, _) = seed.uniform("red", ["green", "blue"])
 
     Stdout.line!("Rolled a ${die.to_str()} and picked ${colour}")?
@@ -43,11 +43,15 @@ main! = |_| {
   method on that seed, and hands back the seed for the next draw.
 - `seed.step()` draws a uniform `U64` over the whole range. Everything else is
   built on this.
-- `seed.int(lo, hi)` draws a uniform `I64` between the bounds, inclusive, given
-  in either order.
+- `seed.u8(lo, hi)` draws a uniform `U8` between the bounds, inclusive, given
+  in either order. Every integer type has a draw named after it: `u8`, `u16`,
+  `u32`, `u64`, `i8`, `i16`, `i32`, and `i64`.
+- `seed.f64()` draws a uniform `F64` in `0 ..< 1`.
 - `seed.u64_below(n)` draws a uniform `U64` in `0 ..< n`, without modulo bias.
 - `seed.uniform(first, rest)` picks one of the given values uniformly. The
   first value stands alone so there is always something to pick.
 - `seed.bool()` flips a coin.
+- `seed.to_u64()` reads the state back out, so you can persist a generator and
+  rebuild it later with `Random.seed`.
 
 See `examples/` for a runnable program.

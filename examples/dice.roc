@@ -21,7 +21,7 @@ main! = |_| {
 
 	var rolls = []
 	for _ in 0..<5 {
-		(die, seed) = seed.int(1, 6)
+		(die, seed) = seed.u8(1, 6)
 		rolls = rolls.append(die.to_str())
 	}
 	Stdout.line!("Five dice: ${Str.join_with(rolls, ", ")}")?
