@@ -11,17 +11,22 @@ import random.Random
 # The generator is deterministic: this fixed seed prints the same rolls every
 # run. Seed from something that varies (like the current time) when you want
 # runs to differ.
+#
+# Every draw is a method on the seed and hands back the seed for the next
+# draw. `var` lets each one reassign the same name, so there is only ever one
+# seed to reach for.
 
 main! = |_| {
-	seed = Random.seed(2026)
+	var seed = Random.seed(2026)
 
-	(rolls, seed_after_rolls) = (0..<5).iter().fold(([], seed), |(dice, s), _| {
-		(die, s2) = Random.int(s, 1, 6)
-		(dice.append(die.to_str()), s2)
-	})
+	var rolls = []
+	for _ in 0..<5 {
+		(die, seed) = seed.int(1, 6)
+		rolls = rolls.append(die.to_str())
+	}
 	Stdout.line!("Five dice: ${Str.join_with(rolls, ", ")}")?
 
-	(colour, _) = Random.uniform(seed_after_rolls, "red", ["green", "blue"])
+	(colour, _) = seed.uniform("red", ["green", "blue"])
 	Stdout.line!("A colour: ${colour}")?
 
 	Ok({})
