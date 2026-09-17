@@ -18,7 +18,7 @@ API docs: https://niclas-ahden.github.io/roc-prng/
 ```roc
 app [main!] {
     pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.22.0/F1JVZPYfWP71s8vk6tHcV1Qx1Ef6CZkwswGoCn8VHZmL.tar.zst",
-    random: "https://github.com/niclas-ahden/roc-prng/releases/download/0.2.0/2usPM5QhgWY5odvrua7GD7jB94nKXwpzjgi3ygARCzDr.tar.zst",
+    random: "https://github.com/niclas-ahden/roc-prng/releases/download/0.4.0/C3JpBYoPwC9SN5aweoh1Dux2K3iy4vfMTdAsWooE1HF5.tar.zst",
 }
 
 import pf.Stdout
