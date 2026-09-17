@@ -28,11 +28,11 @@ import random.Random
 main! = |_| {
     # Seed from the current time so every run differs. Seed from a fixed
     # number instead when you want a reproducible sequence.
-    var seed = Random.seed(Utc.now!().to_u64_wrap())
+    var $seed = Random.seed(Utc.now!().to_u64_wrap())
 
     # Each draw returns the value and the seed for the next draw
-    (die, seed) = seed.u8(1, 6)
-    (colour, _) = seed.uniform("red", ["green", "blue"])
+    (die, $seed) = $seed.u8(1, 6)
+    (colour, _) = $seed.uniform("red", ["green", "blue"])
 
     Stdout.line!("Rolled a ${die.to_str()} and picked ${colour}")?
     Ok({})

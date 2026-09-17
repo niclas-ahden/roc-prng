@@ -17,16 +17,16 @@ import random.Random
 # seed to reach for.
 
 main! = |_| {
-	var seed = Random.seed(2026)
+	var $seed = Random.seed(2026)
 
-	var rolls = []
+	var $rolls = []
 	for _ in 0..<5 {
-		(die, seed) = seed.u8(1, 6)
-		rolls = rolls.append(die.to_str())
+		(die, $seed) = $seed.u8(1, 6)
+		$rolls = $rolls.append(die.to_str())
 	}
-	Stdout.line!("Five dice: ${Str.join_with(rolls, ", ")}")?
+	Stdout.line!("Five dice: ${Str.join_with($rolls, ", ")}")?
 
-	(colour, _) = seed.uniform("red", ["green", "blue"])
+	(colour, _) = $seed.uniform("red", ["green", "blue"])
 	Stdout.line!("A colour: ${colour}")?
 
 	Ok({})

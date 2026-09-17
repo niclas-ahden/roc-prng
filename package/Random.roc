@@ -6,9 +6,9 @@
 ## value you asked for together with the seed for the next draw:
 ##
 ## ```roc
-## var seed = Random.seed(42)
-## (die, seed) = seed.u8(1, 6)
-## (colour, seed) = seed.uniform("red", ["green", "blue"])
+## var $seed = Random.seed(42)
+## (die, $seed) = $seed.u8(1, 6)
+## (colour, $seed) = $seed.uniform("red", ["green", "blue"])
 ## ```
 ##
 ## `var` lets each draw reassign the same name, so there is only ever one seed
@@ -16,7 +16,7 @@
 ## inside a closure, so thread the seed by hand when you fold:
 ##
 ## ```roc
-## (rolls, next_seed) = (0..<5).iter().fold(([], seed), |(dice, s), _| {
+## (rolls, next_seed) = (0..<5).iter().fold(([], $seed), |(dice, s), _| {
 ##     (die, s2) = s.u8(1, 6)
 ##     (dice.append(die), s2)
 ## })
@@ -207,17 +207,17 @@ Random := [].{
 # outputs), so the sequence is pinned to the reference algorithm and cannot
 # drift silently.
 expect {
-	var seed = Random.seed(0)
-	(v0, seed) = seed.step()
-	(v1, seed) = seed.step()
-	(v2, _) = seed.step()
+	var $seed = Random.seed(0)
+	(v0, $seed) = $seed.step()
+	(v1, $seed) = $seed.step()
+	(v2, _) = $seed.step()
 	v0 == 16294208416658607535 and v1 == 7960286522194355700 and v2 == 487617019471545679
 }
 expect {
-	var seed = Random.seed(42)
-	(v0, seed) = seed.step()
-	(v1, seed) = seed.step()
-	(v2, _) = seed.step()
+	var $seed = Random.seed(42)
+	(v0, $seed) = $seed.step()
+	(v1, $seed) = $seed.step()
+	(v2, _) = $seed.step()
 	v0 == 13679457532755275413 and v1 == 2949826092126892291 and v2 == 5139283748462763858
 }
 
@@ -231,10 +231,10 @@ expect {
 # Reassigning a var really does advance the state: three draws in a row from
 # one name are three different values, not the same one drawn three times.
 expect {
-	var seed = Random.seed(2026)
-	(a, seed) = seed.step()
-	(b, seed) = seed.step()
-	(c, _) = seed.step()
+	var $seed = Random.seed(2026)
+	(a, $seed) = $seed.step()
+	(b, $seed) = $seed.step()
+	(c, _) = $seed.step()
 	a != b and b != c and a != c
 }
 
@@ -253,15 +253,15 @@ expect {
 
 # u64_below stays under its bound over a run of draws, and n == 0 is total.
 expect {
-	var seed = Random.seed(1)
-	var misses = 0
+	var $seed = Random.seed(1)
+	var $misses = 0
 	for _ in 0..<200 {
-		(value, seed) = seed.u64_below(10)
+		(value, $seed) = $seed.u64_below(10)
 		if value >= 10 {
-			misses = misses + 1
+			$misses = $misses + 1
 		}
 	}
-	misses == 0
+	$misses == 0
 }
 expect {
 	(value, s1) = Random.seed(3).u64_below(0)
@@ -291,15 +291,15 @@ expect {
 # i64 respects inclusive bounds in either order, and a collapsed range is
 # constant.
 expect {
-	var seed = Random.seed(9)
-	var misses = 0
+	var $seed = Random.seed(9)
+	var $misses = 0
 	for _ in 0..<200 {
-		(value, seed) = seed.i64(-3, 3)
+		(value, $seed) = $seed.i64(-3, 3)
 		if value < -3 or value > 3 {
-			misses = misses + 1
+			$misses = $misses + 1
 		}
 	}
-	misses == 0
+	$misses == 0
 }
 expect {
 	(a, s1) = Random.seed(13).i64(5, -5)
@@ -321,15 +321,15 @@ expect {
 # u64 respects inclusive bounds in either order, covers the full range without
 # overflowing, and a collapsed range is constant.
 expect {
-	var seed = Random.seed(43)
-	var misses = 0
+	var $seed = Random.seed(43)
+	var $misses = 0
 	for _ in 0..<200 {
-		(value, seed) = seed.u64(1000, 1010)
+		(value, $seed) = $seed.u64(1000, 1010)
 		if value < 1000 or value > 1010 {
-			misses = misses + 1
+			$misses = $misses + 1
 		}
 	}
-	misses == 0
+	$misses == 0
 }
 expect {
 	(a, _) = Random.seed(47).u64(9, 2)
@@ -359,19 +359,19 @@ expect {
 	narrow.to_i64() == wide
 }
 expect {
-	var seed = Random.seed(71)
-	var lows = 0
-	var highs = 0
+	var $seed = Random.seed(71)
+	var $lows = 0
+	var $highs = 0
 	for _ in 0..<100 {
-		(value, seed) = seed.u8(0, 1)
+		(value, $seed) = $seed.u8(0, 1)
 		if value == 0 {
-			lows = lows + 1
+			$lows = $lows + 1
 		}
 		if value == 1 {
-			highs = highs + 1
+			$highs = $highs + 1
 		}
 	}
-	lows > 0 and highs > 0 and lows + highs == 100
+	$lows > 0 and $highs > 0 and $lows + $highs == 100
 }
 expect {
 	(value, _) = Random.seed(73).i8(I8.lowest, I8.highest)
@@ -396,22 +396,22 @@ expect {
 
 # f64 stays in 0 ..< 1 over a run of draws, and the draws are not all equal.
 expect {
-	var seed = Random.seed(101)
-	var misses = 0
-	var first = 0.0
-	var moved = Bool.False
+	var $seed = Random.seed(101)
+	var $misses = 0
+	var $first = 0.0
+	var $moved = Bool.False
 	for i in 0..<200 {
-		(value, seed) = seed.f64()
+		(value, $seed) = $seed.f64()
 		if value < 0.0 or value >= 1.0 {
-			misses = misses + 1
+			$misses = $misses + 1
 		}
 		if i == 0 {
-			first = value
-		} else if value != first {
-			moved = Bool.True
+			$first = value
+		} else if value != $first {
+			$moved = Bool.True
 		}
 	}
-	misses == 0 and moved
+	$misses == 0 and $moved
 }
 
 # uniform picks each of three values at least once over a modest run, and a
@@ -436,22 +436,22 @@ expect {
 
 # bool produces both values over a run of draws.
 expect {
-	var seed = Random.seed(31)
-	var trues = 0
+	var $seed = Random.seed(31)
+	var $trues = 0
 	for _ in 0..<50 {
-		(value, seed) = seed.bool()
+		(value, $seed) = $seed.bool()
 		if value {
-			trues = trues + 1
+			$trues = $trues + 1
 		}
 	}
-	trues > 0 and trues < 50
+	$trues > 0 and $trues < 50
 }
 
 # The threading style and the var style draw the same sequence.
 expect {
-	var seed = Random.seed(37)
-	(a, seed) = seed.i64(1, 100)
-	(b, _) = seed.i64(1, 100)
+	var $seed = Random.seed(37)
+	(a, $seed) = $seed.i64(1, 100)
+	(b, _) = $seed.i64(1, 100)
 
 	(c, s1) = Random.seed(37).i64(1, 100)
 	(d, _) = s1.i64(1, 100)
